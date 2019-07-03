@@ -1,7 +1,9 @@
+```
+1. 로컬 bash_profile alais 세팅
+2. 로컬 centos@퍼블릭 ip host 파일 세팅
+3. 각 서버에서 host 파일 세팅
+```
 
-|1. 로컬 bash_profile alais 세팅
-|2. 로컬 centos@퍼블릭 ip host 파일 세팅
-|3. 각 서버에서 host 파일 세팅
 
 # System Pre-configuration Checks
 ## 1. Update yum
