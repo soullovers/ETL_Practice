@@ -330,3 +330,10 @@ GRANT ALL ON nav.* TO 'nav'@'%' IDENTIFIED BY 'nav';
 GRANT ALL ON navms.* TO 'navms'@'%' IDENTIFIED BY 'navms';
 GRANT ALL ON oozie.* TO 'oozie'@'%' IDENTIFIED BY 'oozie';
 ```
+
+
+## Set up the Cloudera Manager Database
+
+```
+/usr/share/cmf/schema/scm_prepare_database.sh mysql scm scm scm
+```
