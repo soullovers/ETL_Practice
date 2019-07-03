@@ -189,7 +189,7 @@ sudo yum install cloudera-manager-daemons cloudera-manager-agent
 ```
 ##  configure the Cloudera Manager Agent(on all hosts)
 ```
-vi /etc/cloudera-scm-agent/config.ini
+#vi /etc/cloudera-scm-agent/config.ini
 server_host=host3
 ```
 
