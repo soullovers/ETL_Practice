@@ -4,7 +4,14 @@
 3. 각 서버에서 host 파일 세팅
 ```
 
+```
+alias h1='ssh -i ./SKT.pem centos@15.164.189.253'
+alias h2='ssh -i ./SKT.pem centos@15.164.189.57'
+alias h3='ssh -i ./SKT.pem centos@15.164.29.241'
+alias h4='ssh -i ./SKT.pem centos@15.164.29.93'
+alias h5='ssh -i ./SKT.pem centos@15.164.85.137'
 
+```
 # System Pre-configuration Checks
 ## 1. Update yum
 ```
