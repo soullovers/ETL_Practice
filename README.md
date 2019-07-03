@@ -378,7 +378,7 @@ GRANT ALL ON oozie.* TO 'oozie'@'%' IDENTIFIED BY 'oozie';
 - Flume
 - Gateway configuration
 
-### Worker Hosts [host2,host3,host4]
+### Worker Hosts [host2,host4,host5]
 - DataNode
 - NodeManager
 - Impalad
