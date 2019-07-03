@@ -111,3 +111,16 @@ GRUB_DISABLE_RECOVERY="true"
 
 ip addr show | grep net6
 ```
+
+## 10. 각 개인PC -> instances 로 ssh 접속 1회씩 할것(key exchange)
+
+## 11. Show that forward and reverse host lookups are correctly resolved
+- 각 instance 의 /etc/hosts 에 호스트 추가
+```
+172.31.15.98	host1
+172.31.1.63	host2
+172.31.14.58	host3
+172.31.9.201	host4
+172.31.8.29	host5
+```
+
