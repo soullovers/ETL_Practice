@@ -159,3 +159,9 @@ java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64
 wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.47.tar.gz
  tar -zxvf mysql-connector-java-5.1.47.tar.gz
 ```
+- 자바 환경변수 ㅅ세팅
+```
+vi /etc/profile
+export JAVA_HOME=/usr/java/jdk1.8.0_211-amd64/jre/bin/java 추가
+source /etc/profile
+```
