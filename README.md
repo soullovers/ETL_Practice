@@ -134,7 +134,7 @@ ip addr show | grep net6
 # Path B install using CM 5.15.x
 ## 1. jdk 설치
 ```
-yum install java-1.8.0-openjdk-devel.x86_64
+sudo yum localinstall jdk-8u102-linux-x64.rpm
 ```
 
 
