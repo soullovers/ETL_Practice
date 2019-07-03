@@ -134,9 +134,10 @@ ip addr show | grep net6
 # Path B install using CM 5.15.x
 ## 1. jdk 설치
 ```
-yum install wget
-
-sudo yum localinstall jdk-8u211-linux-x64.rpm
+sudo su
+mv /home/centos/jdk-8u211-linux-x64.rpm /usr/local/
+chmod 777 /usr/local/jdk-8u211-linux-x64.rpm
+yum localinstall /usr/local/jdk-8u211-linux-x64.rpm
 ```
 
 
