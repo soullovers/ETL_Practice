@@ -353,3 +353,33 @@ GRANT ALL ON oozie.* TO 'oozie'@'%' IDENTIFIED BY 'oozie';
 ```
 /usr/share/cmf/schema/scm_prepare_database.sh mysql scm scm scm
 ```
+
+
+# CDH Cluster Hosts and Role Assignments
+### Master Hosts [host1]
+- NameNode
+- YARN ResourceManager
+- JobHistory Server
+- ZooKeeper
+- Kudu master
+- Spark History Server
+
+
+### Utility Hosts, Gateway Hosts [host3]
+- Secondary NameNode
+- Cloudera Manager
+- Cloudera Manager Management Service
+- Hive Metastore
+- HiveServer2
+- Impala Catalog Server
+- Impala StateStore
+- Hue
+- Oozie
+- Flume
+- Gateway configuration
+
+### Worker Hosts [host2,host3,host4]
+- DataNode
+- NodeManager
+- Impalad
+- Kudu tablet server
