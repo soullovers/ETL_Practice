@@ -178,3 +178,12 @@ source /etc/profile
  sudo wget https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/cloudera-manager.repo -P /etc/yum.repos.d/
  sudo rpm --import https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/RPM-GPG-KEY-cloudera
  ```
+
+## cm server 설치
+```
+yum install cloudera-manager-daemons cloudera-manager-server
+```
+## cm agent 설치
+```
+sudo yum install cloudera-manager-daemons cloudera-manager-agent
+```
