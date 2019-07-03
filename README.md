@@ -354,6 +354,10 @@ GRANT ALL ON oozie.* TO 'oozie'@'%' IDENTIFIED BY 'oozie';
 /usr/share/cmf/schema/scm_prepare_database.sh mysql scm scm scm
 ```
 
+## start cm server
+```
+sudo service cloudera-scm-server start
+```
 
 # CDH Cluster Hosts and Role Assignments
 ### Master Hosts [host1]
