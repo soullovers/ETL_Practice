@@ -48,4 +48,7 @@ GRUB_CMDLINE_LINUX="nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv
 GRUB_DISABLE_RECOVERY="true"
 
 # grub2-mkconfig -o /boot/grub2/grub.cfg
+
+# cat /proc/cmdline
+BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv=vg_os/lv_swap rhgb quiet transparent_hugepage=never LANG=en_US.UTF-8
 ```
