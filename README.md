@@ -140,4 +140,14 @@ chmod 777 /usr/local/jdk-8u211-linux-x64.rpm
 yum localinstall /usr/local/jdk-8u211-linux-x64.rpm
 ```
 
+- 잘못 설치된 jdk 삭제시 정확한 패키지 이름 확인
+```
+# rpm -qa | grep java
 
+javapackages-tools-3.4.1-11.el7.noarch
+tzdata-java-2019a-1.el7.noarch
+java-1.8.0-openjdk-headless-1.8.0.212.b04-0.el7_6.x86_64
+python-javapackages-3.4.1-11.el7.noarch
+java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64
+
+```
