@@ -20,7 +20,7 @@ sudo yum update
 ## 2. Change the run level to multi-user text mode
 ```
 sudo systemctl get-default
-sudo systemctl set-default mulit-user.target
+sudo systemctl set-default multi-user.target
 ```
 ## 3. Disable SE Linux 
 ```
