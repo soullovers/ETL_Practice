@@ -12,6 +12,16 @@ alias h4='ssh -i ./SKT.pem centos@15.164.29.93'
 alias h5='ssh -i ./SKT.pem centos@15.164.85.137'
 
 ```
+
+# host 간 ssh 연결 작업
+- pem key 파일을 cm server host 에 복사
+```
+scp -i SKT.pem SKT.pem centos@15.164.29.241:.
+ssh -i SKT.pem centos@host1~5
+(1회씩 접속하여 key change 수행)
+```
+
+
 # System Pre-configuration Checks
 ## 1. Update yum
 ```
