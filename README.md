@@ -45,11 +45,6 @@ sysctl vm.swappiness
 # cat /sys/kernel/mm/transparent_hugepage/enabled
 [always] madvise never
 ```
-
-(reboot 필요)
-
-
-
 - /etc/default/grub 파일의 GRUB_CMDLINE_LINUX 라인 파라미터에 transparent_hugepage=never 추가
 ```
 # vi /etc/default/grub
@@ -96,4 +91,21 @@ service chronyd stop
 (reboot 후 확인해볼것)
 ```
 
+## 9. Disable ipv6
 
+- /etc/default/grub 파일의 GRUB_CMDLINE_LINUX 라인 파라미터에 ipv6.disable=1 추가
+```
+# vi /etc/default/grub
+GRUB_TIMEOUT=5
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv=vg_os/lv_swap rhgb quiet transparent_hugepage=never ipv6.disable=1"
+GRUB_DISABLE_RECOVERY="true"
+
+# grub2-mkconfig -o /boot/grub2/grub.cfg
+
+(reboot 필요)
+
+ip addr show | grep net6
+```
