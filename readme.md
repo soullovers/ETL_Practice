@@ -46,4 +46,6 @@ GRUB_DISABLE_SUBMENU=true
 GRUB_TERMINAL_OUTPUT="console"
 GRUB_CMDLINE_LINUX="nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv=vg_os/lv_swap rhgb quiet transparent_hugepage=never"
 GRUB_DISABLE_RECOVERY="true"
+
+# grub2-mkconfig -o /boot/grub2/grub.cfg
 ```
