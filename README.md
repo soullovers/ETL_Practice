@@ -20,7 +20,11 @@ scp -i SKT.pem SKT.pem centos@15.164.29.241:.
 ssh -i SKT.pem centos@host1~5
 (1회씩 접속하여 key change 수행)
 ```
-
+- hostname 을 /etc/hosts 에 서로 참조되는 이름으로 변경
+```
+sudo hostnamectl set-hostname host3
+reboot
+```
 
 # System Pre-configuration Checks
 ## 1. Update yum
