@@ -131,3 +131,9 @@ ip addr show | grep net6
 172.31.8.29	host5
 ```
 
+## 12. jdk 설치
+```
+yum install java-1.8.0-openjdk-devel.x86_64
+```
+
+
