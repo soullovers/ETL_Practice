@@ -172,3 +172,9 @@ export CLASSPATH=$JAVA_HOME/lib/
 
 source /etc/profile
 ```
+
+## Step 1: Configure a Repository for Cloudera Manager
+```
+ sudo wget https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/5.16.2/ -P /etc/yum.repos.d/
+ sudo rpm --import https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/RPM-GPG-KEY-cloudera
+ ```
