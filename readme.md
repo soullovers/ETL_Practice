@@ -27,7 +27,9 @@ reboot
 
 8. Check vm.swappiness and update permanently as necessary : Set the value to 1
 ```
-sysctl vm.swappiness=1
+# vi /etc/sysctl.conf
+
+vm.swappiness = 1
 ```
 
 9. Disable transparent hugepage support permanently
