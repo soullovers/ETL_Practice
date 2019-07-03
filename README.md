@@ -197,3 +197,17 @@ server_host=host3
 ```
 sudo systemctl start cloudera-scm-agent
 ```
+
+## Install the MySQL database.
+```
+wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
+sudo yum update
+sudo yum install mysql-server
+sudo systemctl start mysqld
+```
+
+## Configuring and Starting the MySQL Server
+```
+sudo systemctl stop mysqld
+```
