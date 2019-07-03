@@ -52,3 +52,18 @@ GRUB_DISABLE_RECOVERY="true"
 # cat /proc/cmdline
 BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv=vg_os/lv_swap rhgb quiet transparent_hugepage=never LANG=en_US.UTF-8
 ```
+
+10. Check to see that nscd service is running
+```
+# systemctl  list-units --type service -all | grep nscd
+```
+- 설치 되어있지 않으면 
+```
+# yum install nscd
+# service start nscd
+```
+
+11. Check to see that ntp service is running, Disable chrony as necessary
+```
+# systemctl  list-units --type service -all | grep ntp
+```
