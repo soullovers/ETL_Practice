@@ -31,13 +31,24 @@ reboot
 
 vm.swappiness = 1
 ```
+(reboot 필요)
+
+- 확인
+```
+sysctl vm.swappiness
+```
 
 ## 9. Disable transparent hugepage support permanently
 - `always` 라 표시되면 ENABLE 되어잇는 상태
+- `never` 라 표시되면 성공
 ```
 # cat /sys/kernel/mm/transparent_hugepage/enabled
 [always] madvise never
 ```
+
+(reboot 필요)
+
+
 
 - /etc/default/grub 파일의 GRUB_CMDLINE_LINUX 라인 파라미터에 transparent_hugepage=never 추가
 ```
