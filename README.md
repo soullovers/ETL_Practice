@@ -155,4 +155,5 @@ java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64
 - 내부의 jar 파일을 java lib 로 복사
 ```
 wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.47.tar.gz
+ tar -zxvf mysql-connector-java-5.1.47.tar.gz
 ```
