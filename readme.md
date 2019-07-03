@@ -24,3 +24,8 @@ reboot
 7. Disable firewall 
 ```
 ```
+
+8. Check vm.swappiness and update permanently as necessary : Set the value to 1
+```
+sysctl vm.swappiness=1
+```
