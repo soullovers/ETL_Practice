@@ -4,3 +4,9 @@
 5. sudo yum update
 6. sudo systemctl get-default
 7. sudo systemctl set-default mulit-user.target
+8. Disable SE Linux 
+vi /etc/sysconfig/selinux
+SELINUX=enforcing 을 SELINUX=disabled 로 변경후 저장한다.
+reboot
+
+9. Disable firewall 
