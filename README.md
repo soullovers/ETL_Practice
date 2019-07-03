@@ -51,6 +51,8 @@ GRUB_DISABLE_RECOVERY="true"
 
 # grub2-mkconfig -o /boot/grub2/grub.cfg
 
+(reboot 필요)
+
 # cat /proc/cmdline
 BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv=vg_os/lv_swap rhgb quiet transparent_hugepage=never LANG=en_US.UTF-8
 ```
@@ -62,10 +64,15 @@ BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro
 - 설치 되어있지 않으면 
 ```
 # yum install nscd
-# service nscd start
+# service nscd start 
 ```
 
 ## 11. Check to see that ntp service is running, Disable chrony as necessary
 ```
 # systemctl  list-units --type service -all | grep ntp
+```
+- 설치 되어있지 않으면 
+```
+# yum install ntp
+# service ntpd start 
 ```
