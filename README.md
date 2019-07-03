@@ -134,6 +134,8 @@ ip addr show | grep net6
 # Path B install using CM 5.15.x
 ## 1. jdk 설치
 ```
+yum install wget
+wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm
 sudo yum localinstall jdk-8u102-linux-x64.rpm
 ```
 
