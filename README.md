@@ -275,3 +275,35 @@ sql_mode=STRICT_ALL_TABLES
 sudo systemctl enable mysqld
 ```
 
+### Start the MySQL server
+```
+sudo systemctl start mysqld
+```
+
+
+### Run /usr/bin/mysql_secure_installation to set the MySQL root password and other security-related settings
+```
+sudo /usr/bin/mysql_secure_installation
+```
+```
+[...]
+Enter current password for root (enter for none):
+OK, successfully used password, moving on...
+[...]
+Set root password? [Y/n] Y
+New password:
+Re-enter new password:
+Remove anonymous users? [Y/n] Y
+[...]
+Disallow root login remotely? [Y/n] N
+[...]
+Remove test database and access to it [Y/n] Y
+[...]
+Reload privilege tables now? [Y/n] Y
+All done!
+```
+
+
+## Creating Databases for Cloudera Software
+
+
