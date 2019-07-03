@@ -1,19 +1,19 @@
-1. 로컬 bash_profile alais 세팅
+## 1. 로컬 bash_profile alais 세팅
 
-2. 로컬 centos@퍼블릭 ip host 파일 세팅
+## 2. 로컬 centos@퍼블릭 ip host 파일 세팅
 
-3. 각 서버에서 host 파일 세팅
+## 3. 각 서버에서 host 파일 세팅
 
-4. Update yum
+## 4. Update yum
 ```
 sudo yum update
 ```
-5. Change the run level to multi-user text mode
+## 5. Change the run level to multi-user text mode
 ```
 sudo systemctl get-default
 sudo systemctl set-default mulit-user.target
 ```
-6. Disable SE Linux 
+## 6. Disable SE Linux 
 ```
 vi /etc/sysconfig/selinux
 SELINUX=enforcing -> SELINUX=disabled
@@ -21,18 +21,18 @@ SELINUX=enforcing -> SELINUX=disabled
 로 변경후 저장한다.
 reboot
 
-7. Disable firewall 
+## 7. Disable firewall 
 ```
 ```
 
-8. Check vm.swappiness and update permanently as necessary : Set the value to 1
+## 8. Check vm.swappiness and update permanently as necessary : Set the value to 1
 ```
 # vi /etc/sysctl.conf
 
 vm.swappiness = 1
 ```
 
-9. Disable transparent hugepage support permanently
+## 9. Disable transparent hugepage support permanently
 - `always` 라 표시되면 ENABLE 되어잇는 상태
 ```
 # cat /sys/kernel/mm/transparent_hugepage/enabled
@@ -55,7 +55,7 @@ GRUB_DISABLE_RECOVERY="true"
 BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv=vg_os/lv_swap rhgb quiet transparent_hugepage=never LANG=en_US.UTF-8
 ```
 
-10. Check to see that nscd service is running
+## 10. Check to see that nscd service is running
 ```
 # systemctl  list-units --type service -all | grep nscd
 ```
@@ -65,7 +65,7 @@ BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro
 # service start nscd
 ```
 
-11. Check to see that ntp service is running, Disable chrony as necessary
+## 11. Check to see that ntp service is running, Disable chrony as necessary
 ```
 # systemctl  list-units --type service -all | grep ntp
 ```
