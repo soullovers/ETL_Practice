@@ -87,3 +87,13 @@ BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro
 # yum install ntp
 # service ntpd start 
 ```
+
+- chronyd 영구 disable
+```
+systemctl disable chronyd
+service chronyd stop
+
+(reboot 후 확인해볼것)
+```
+
+
