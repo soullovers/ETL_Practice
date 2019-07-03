@@ -94,6 +94,7 @@ BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro
 ```
 # yum install nscd
 # service nscd start 
+# sudo systemctl enable nscd
 ```
 
 ## 8. Check to see that ntp service is running, Disable chrony as necessary
@@ -104,6 +105,7 @@ BOOT_IMAGE=/vmlinuz-3.10.0-514.10.2.el7.x86_64 root=/dev/mapper/vg_os-lv_root ro
 ```
 # yum install ntp
 # service ntpd start 
+# sudo systemctl enable ntpd
 ```
 
 - chronyd 영구 disable
