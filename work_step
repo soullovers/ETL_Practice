@@ -10,3 +10,8 @@ SELINUX=enforcing 을 SELINUX=disabled 로 변경후 저장한다.
 reboot
 
 9. Disable firewall 
+
+10. Check vm.swappiness and update permanently as necessary.
+o Set the value to 1
+
+sysctl vm.swappiness=1
