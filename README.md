@@ -179,11 +179,21 @@ source /etc/profile
  sudo rpm --import https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/RPM-GPG-KEY-cloudera
  ```
 
-## cm server 설치
+## cm server 설치(on host3)
 ```
 yum install cloudera-manager-daemons cloudera-manager-server
 ```
-## cm agent 설치
+## cm agent 설치(on all hosts)
 ```
 sudo yum install cloudera-manager-daemons cloudera-manager-agent
+```
+##  configure the Cloudera Manager Agent(on all hosts)
+```
+vi /etc/cloudera-scm-agent/config.ini
+server_host=host3
+```
+
+## Start the Agents
+```
+sudo systemctl start cloudera-scm-agent
 ```
