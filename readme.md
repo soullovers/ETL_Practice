@@ -29,3 +29,10 @@ reboot
 ```
 sysctl vm.swappiness=1
 ```
+
+9. Disable transparent hugepage support permanently
+- `always` 라 표시되면 ENABLE 되어잇는 상태
+```
+# cat /sys/kernel/mm/transparent_hugepage/enabled
+[always] madvise never
+```
