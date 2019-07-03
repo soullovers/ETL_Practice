@@ -36,3 +36,14 @@ sysctl vm.swappiness=1
 # cat /sys/kernel/mm/transparent_hugepage/enabled
 [always] madvise never
 ```
+
+- /etc/default/grub 파일의 GRUB_CMDLINE_LINUX 라인 파라미터에 transparent_hugepage=never 추가
+```
+# vi /etc/default/grub
+GRUB_TIMEOUT=5
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="nomodeset crashkernel=auto rd.lvm.lv=vg_os/lv_root rd.lvm.lv=vg_os/lv_swap rhgb quiet transparent_hugepage=never"
+GRUB_DISABLE_RECOVERY="true"
+```
