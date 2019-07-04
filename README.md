@@ -435,3 +435,33 @@ sqoop import \
 --split-by id \
 --query "select * from test.posts WHERE \$CONDITIONS"
 ```
+
+```
+create database test;
+
+create external table if not exists test.authors (
+     id int ,
+     first_name varchar(50),
+     last_name varchar(50),
+     email varchar(100),
+     birthdate string,
+     added timestamp
+) 
+comment 'test author'
+row format delimited fields terminated by '\001'
+location '/user/training/authors'
+;
+
+create external table if not exists test.posts (
+     id int ,
+     author_id int,
+     title varchar(255),
+     description varchar(500),
+     content string,
+     date string
+) 
+comment 'test post'
+row format delimited fields terminated by '\001'
+location '/user/training/posts'
+;
+```
