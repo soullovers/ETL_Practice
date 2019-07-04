@@ -5,12 +5,18 @@
 ```
 
 ```
-alias h1='ssh -i ./SKT.pem centos@15.164.189.253'
-alias h2='ssh -i ./SKT.pem centos@15.164.189.57'
+alias h1='ssh -i ./SKT.pem centos@15.164.168.239'
+alias h2='ssh -i ./SKT.pem centos@15.164.200.129'
 alias h3='ssh -i ./SKT.pem centos@15.164.29.241'
 alias h4='ssh -i ./SKT.pem centos@15.164.29.93'
 alias h5='ssh -i ./SKT.pem centos@15.164.85.137'
 
+
+15.164.168.239	cm.bdai.com	cm
+15.164.200.129	m1.bdai.com	m1
+15.164.204.53	d1.bdai.com	d1
+15.164.77.16	d2.bdai.com	d2
+52.78.111.92	d3.bdai.com	d3
 ```
 
 # host 간 ssh 연결 작업
@@ -327,6 +333,7 @@ CREATE DATABASE scm DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE amon DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE rman DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE hue DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE hive DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE metastore DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE sentry DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE nav DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
