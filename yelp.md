@@ -196,8 +196,7 @@ business_id string,
 user_id string)
 ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
-LOCATION '/user/mboldin/yelp/tip';
-
+LOCATION '/user/training/yelp/tip';
 
 ```
 - validation sqls
