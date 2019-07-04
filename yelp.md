@@ -1,8 +1,11 @@
 ```
+add jar hdfs:/user/training/json-serde-1.3.8-jar-with-dependencies.jar;
+add jar hdfs:/user/training/json-udf-1.3.8-jar-with-dependencies.jar;
+
 add jar json-serde-1.3.8-jar-with-dependencies.jar;
 add jar json-udf-1.3.8-jar-with-dependencies.jar;
 
-CREATE EXTERNAL TABLE business4 (
+CREATE EXTERNAL TABLE test.business4 (
 address string,
 business_id string,
 categories array<string>,
@@ -110,5 +113,89 @@ restaurantpricerange2:int>)
 ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
 LOCATION '/user/training/yelp/business';
+
+
+CREATE TABLE test.biz4
+STORED AS PARQUET
+AS SELECT * FROM business4;
+
+CREATE TABLE test.exploded
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE
+LOCATION '/user/training/yelp/business/exploded'
+AS SELECT * FROM business4 LATERAL VIEW explode(categories) c AS cat_exploded;
+
+CREATE TABLE test.restaurants
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE
+LOCATION '/user/mboldin/yelp/business/restaurants'
+AS
+SELECT * FROM exploded WHERE cat_exploded="Restaurants";
+
+CREATE EXTERNAL TABLE test.review (
+business_id string,
+cool int,
+review_date string,
+funny int,
+review_id string,
+stars int,
+text string,
+useful int,
+user_id string)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE
+LOCATION '/user/training/yelp/review';
+
+CREATE TABLE test.review_filtered
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE
+LOCATION '/user/training/yelp/review_filtered'
+AS
+SELECT re.business_id, r.stars, r.user_id
+FROM review r JOIN restaurants re
+ON r.business_id = re.business_id;
+
+CREATE EXTERNAL TABLE test.users (
+average_stars double,
+compliment_cool int,
+compliment_cute int,
+compliment_funny int,
+compliment_hot int,
+compliment_list int,
+compliment_more int,
+compliment_note int,
+compliment_photos int,
+compliment_plain int,
+compliment_profile int,
+compliment_writer int,
+cool int,
+elite array<int>,
+fans int,
+friends array<string>,
+funny int,
+name string,
+review_count int,
+useful int,
+user_id string,
+yelping_since string)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+LOCATION '/user/training/yelp/users';
+
+CREATE TABLE test.elite_users
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE
+LOCATION '/user/training/yelp/users/elite'
+AS
+SELECT * FROM users LATERAL VIEW explode(elite) c AS elite_year;
+
+CREATE EXTERNAL TABLE test.tip (
+text string,
+date_tip string,
+likes int,
+business_id string,
+user_id string)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE
+LOCATION '/user/mboldin/yelp/tip';
 
 ```
