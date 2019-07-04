@@ -117,20 +117,20 @@ LOCATION '/user/training/yelp/business';
 
 CREATE TABLE test.biz4
 STORED AS PARQUET
-AS SELECT * FROM business4;
+AS SELECT * FROM test.business4;
 
 CREATE TABLE test.exploded
 ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
 LOCATION '/user/training/yelp/business/exploded'
-AS SELECT * FROM business4 LATERAL VIEW explode(categories) c AS cat_exploded;
+AS SELECT * FROM test.business4 LATERAL VIEW explode(categories) c AS cat_exploded;
 
 CREATE TABLE test.restaurants
 ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
 LOCATION '/user/mboldin/yelp/business/restaurants'
 AS
-SELECT * FROM exploded WHERE cat_exploded="Restaurants";
+SELECT * FROM test.exploded WHERE cat_exploded="Restaurants";
 
 CREATE EXTERNAL TABLE test.review (
 business_id string,
@@ -152,7 +152,7 @@ STORED AS TEXTFILE
 LOCATION '/user/training/yelp/review_filtered'
 AS
 SELECT re.business_id, r.stars, r.user_id
-FROM review r JOIN restaurants re
+FROM test.review r JOIN test.restaurants re
 ON r.business_id = re.business_id;
 
 CREATE EXTERNAL TABLE test.users (
@@ -186,7 +186,7 @@ ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
 LOCATION '/user/training/yelp/users/elite'
 AS
-SELECT * FROM users LATERAL VIEW explode(elite) c AS elite_year;
+SELECT * FROM test.users LATERAL VIEW explode(elite) c AS elite_year;
 
 CREATE EXTERNAL TABLE test.tip (
 text string,
@@ -197,5 +197,6 @@ user_id string)
 ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
 LOCATION '/user/mboldin/yelp/tip';
+
 
 ```
