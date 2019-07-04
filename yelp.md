@@ -200,3 +200,34 @@ LOCATION '/user/mboldin/yelp/tip';
 
 
 ```
+- validation sqls
+```
+
+SELECT * FROM business4 LATERAL VIEW explode(categories) c AS cat_exploded limit 10;
+
+SELECT * FROM exploded LIMIT 1;
+
+SELECT count (DISTINCT business_id) number_businesses FROM exploded;
+
+SELECT count (business_id) number_restaurants FROM exploded
+WHERE cat_exploded="Restaurants";
+
+SELECT name, review_count, stars, cat_exploded category FROM restaurants LIMIT 5;
+
+SELECT name, attributes.ambience.romantic FROM restaurants LIMIT 5;
+
+SELECT name, state, city, attributes.ambience.romantic romantic FROM restaurants
+WHERE attributes.ambience.romantic = true LIMIT 10;
+
+SELECT * FROM review LIMIT 1;
+
+SELECT count(*) FROM review;
+
+SELECT count(*) FROM review_filtered;
+
+
+SELECT count(distinct user_id) FROM users;
+select count(*) from elite_users;
+select count(*) from tip;
+
+```
