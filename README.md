@@ -19,11 +19,11 @@
 172.31.14.47	d2.bdai.com	d2
 172.31.3.141	d3.bdai.com	d3
 
-alias cms='ssh -i ./SKT.pem centos@cm'
-alias m1s='ssh -i ./SKT.pem centos@m1'
-alias d1s='ssh -i ./SKT.pem centos@d1'
-alias d2s='ssh -i ./SKT.pem centos@d2'
-alias d3s='ssh -i ./SKT.pem centos@d3'
+alias cms='ssh -i ./SKT.pem centos@15.164.168.239'
+alias m1s='ssh -i ./SKT.pem centos@15.164.200.129'
+alias d1s='ssh -i ./SKT.pem centos@15.164.204.53'
+alias d2s='ssh -i ./SKT.pem centos@15.164.77.16'
+alias d3s='ssh -i ./SKT.pem centos@52.78.111.92'
 ```
 
 # host 간 ssh 연결 작업
