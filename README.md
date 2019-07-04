@@ -405,6 +405,8 @@ sudo service cloudera-scm-server start
 - Impalad
 - Kudu tablet server
 
+
+#sqoop test
 ## add hdfs user
 
 ```
@@ -415,7 +417,7 @@ hdfs dfs -chmod 755 /user/training
 
 ```
 
-
+## Extract tables authors and posts from the database and create Hive tables.
 ```
 sqoop import \
 --connect jdbc:mysql://cm:3306/test \
@@ -465,6 +467,19 @@ row format delimited fields terminated by '\001'
 location '/user/training/posts'
 ;
 
+
+```
+## Export the data from above query to MySQL
+```
+CREATE TABLE `results` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `lname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `num_posts` int,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 insert overwrite table test.results
 select a.id as id
      , a.first_name as fname
@@ -479,20 +494,12 @@ select a.id as id
 -- limit 10
 ;
 
-CREATE TABLE `results` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `lname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `num_posts` int,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 sqoop export \
 --connect jdbc:mysql://cm:3306/test \
 --username training \
 --password training \
 --table results \
---export-dir /user/training/results2 \
+--export-dir /user/training/results \
 --fields-terminated-by '\t' \
 --validate 
 
