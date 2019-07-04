@@ -403,3 +403,13 @@ sudo service cloudera-scm-server start
 - NodeManager
 - Impalad
 - Kudu tablet server
+
+## add hdfs user
+
+```
+sudo adduser training (이거슨 모든 노드에서 생성)
+hdfs dfs -mkdir /user/training
+hdfs dfs -chmown training:training /user/training
+hdfs dfs -chmod 755 /user/training
+
+```
