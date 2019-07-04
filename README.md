@@ -406,7 +406,7 @@ sudo service cloudera-scm-server start
 - Kudu tablet server
 
 
-#sqoop test
+# Let’s test out our cluster
 ## add hdfs user
 
 ```
