@@ -1,4 +1,6 @@
 ```
+add jar json-serde-1.3.8-jar-with-dependencies.jar;
+add jar json-udf-1.3.8-jar-with-dependencies.jar;
 
 CREATE EXTERNAL TABLE business4 (
 address string,
@@ -39,7 +41,7 @@ Noise_Level:string,
 Open24Hours:boolean,
 Outdoor_Seating:boolean,
 Restaurants_Attire:string,
-Restaurants_Counter_Service:boolean, 
+Restaurants_Counter_Service:boolean,
 Restaurants_Delivery:boolean,
 Restaurants_Good_For_Groups:boolean,
 Restaurants_Reservations:boolean,
@@ -70,7 +72,7 @@ BusinessParking:struct<
 Garage:boolean,
 Lot:boolean,
 Street:boolean,
-Valet:boolean, 
+Valet:boolean,
 Validated:boolean>,
 DietaryRestrictions:struct<
 Dairy_Free:boolean,
@@ -101,11 +103,12 @@ BackgroundMusic:boolean,
 Dj:boolean,
 Jukebox:boolean,
 Karaoke:boolean,
-Live:boolean, 
+Live:boolean,
 NoMusic:boolean,
 Video:boolean>,
 restaurantpricerange2:int>)
 ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 STORED AS TEXTFILE
-LOCATION '/user/training/yelp/business'; 
+LOCATION '/user/training/yelp/business';
+
 ```
