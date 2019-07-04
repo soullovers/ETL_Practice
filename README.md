@@ -5,11 +5,19 @@
 ```
 
 ```
+#public
 15.164.168.239	cm.bdai.com	cm
 15.164.200.129	m1.bdai.com	m1
 15.164.204.53	d1.bdai.com	d1
 15.164.77.16	d2.bdai.com	d2
 52.78.111.92	d3.bdai.com	d3
+
+#private
+172.31.0.97	cm.bdai.com	cm
+172.31.3.221	m1.bdai.com	m1
+172.31.15.212	d1.bdai.com	d1
+172.31.14.47	d2.bdai.com	d2
+172.31.3.141	d3.bdai.com	d3
 
 alias cms='ssh -i ./SKT.pem centos@cm'
 alias m1s='ssh -i ./SKT.pem centos@m1'
