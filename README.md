@@ -414,3 +414,16 @@ hdfs dfs -chmown training:training /user/training
 hdfs dfs -chmod 755 /user/training
 
 ```
+
+
+```
+sqoop import \
+--connect jdbc:mysql://cm:3306/test \
+--username training \
+--password training \
+--target-dir /user/training/authors \
+--fields-terminated-by '\001' \
+--split-by id \
+--query "select id, first_name, last_name, email, birthdate, added from test.authors WHERE \$CONDITIONS"
+
+```
