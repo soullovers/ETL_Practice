@@ -30,12 +30,14 @@ alias d3s='ssh -i ./SKT.pem centos@52.78.111.92'
 - pem key 파일을 cm server host 에 복사
 ```
 scp -i SKT.pem SKT.pem centos@15.164.29.241:.
+chmod 400 ./SKT.pem
 ssh -i SKT.pem centos@host1~5
 (1회씩 접속하여 key change 수행)
 ```
 - hostname 을 /etc/hosts 에 서로 참조되는 이름으로 변경
 ```
 sudo hostnamectl set-hostname host3
+
 reboot
 ```
 
