@@ -465,16 +465,35 @@ row format delimited fields terminated by '\001'
 location '/user/training/posts'
 ;
 
-select b.id as id
-     , b.first_name as fname
-     , b.last_name as lanme
-     , count(a.id) as num_posts
-  from test.posts a
-  left outer join test.authors b
-    on a.author_id = b.id
+insert overwrite table test.results
+select a.id as id
+     , a.first_name as fname
+     , a.last_name as lanme
+     , count(b.id) as num_posts
+  from test.authors a
+  left outer join test.posts b
+    on b.author_id = a.id
  group by b.id
      , b.first_name
      , b.last_name
-limit 10
+-- limit 10
 ;
+
+CREATE TABLE `results` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `lname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `num_posts` int,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+sqoop export \
+--connect jdbc:mysql://cm:3306/test \
+--username training \
+--password training \
+--table results \
+--export-dir /user/training/results2 \
+--fields-terminated-by '\t' \
+--validate 
+
 ```
