@@ -426,4 +426,12 @@ sqoop import \
 --split-by id \
 --query "select id, first_name, last_name, email, birthdate, added from test.authors WHERE \$CONDITIONS"
 
+sqoop import \
+--connect jdbc:mysql://cm:3306/test \
+--username training \
+--password training \
+--target-dir /user/training/posts \
+--fields-terminated-by '\001' \
+--split-by id \
+--query "select * from test.posts WHERE \$CONDITIONS"
 ```
