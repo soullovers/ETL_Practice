@@ -5,18 +5,17 @@
 ```
 
 ```
-alias h1='ssh -i ./SKT.pem centos@15.164.168.239'
-alias h2='ssh -i ./SKT.pem centos@15.164.200.129'
-alias h3='ssh -i ./SKT.pem centos@15.164.29.241'
-alias h4='ssh -i ./SKT.pem centos@15.164.29.93'
-alias h5='ssh -i ./SKT.pem centos@15.164.85.137'
-
-
 15.164.168.239	cm.bdai.com	cm
 15.164.200.129	m1.bdai.com	m1
 15.164.204.53	d1.bdai.com	d1
 15.164.77.16	d2.bdai.com	d2
 52.78.111.92	d3.bdai.com	d3
+
+alias cms='ssh -i ./SKT.pem centos@cm'
+alias m1s='ssh -i ./SKT.pem centos@m1'
+alias d1s='ssh -i ./SKT.pem centos@d1'
+alias d2s='ssh -i ./SKT.pem centos@d2'
+alias d3s='ssh -i ./SKT.pem centos@d3'
 ```
 
 # host 간 ssh 연결 작업
