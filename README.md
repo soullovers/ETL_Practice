@@ -464,4 +464,17 @@ comment 'test post'
 row format delimited fields terminated by '\001'
 location '/user/training/posts'
 ;
+
+select b.id as id
+     , b.first_name as fname
+     , b.last_name as lanme
+     , count(a.id) as num_posts
+  from test.posts a
+  left outer join test.authors b
+    on a.author_id = b.id
+ group by b.id
+     , b.first_name
+     , b.last_name
+limit 10
+;
 ```
