@@ -1,0 +1,430 @@
+Day 3
+
+##Spark SQL test: review2 should be in hdfs for SparkSQL
+%pyspark
+review2 = sqlContext.sql("select * from review2");
+review2.show()
+
+%pyspark
+review2.select("*").show(10)
+
+## can find out the table schema from HDFS hive table
+%pyspark
+review2.printSchema()
+
+## Read json file and infer schema as well
+%pyspark
+business = sqlContext.read.option("inferSchema", "true").json("s3://hipicdatasets/yelp/business/business.json")
+business.select("*").show(10)
+
+## can find out the table schema inferred from Json file => easy to build Hive table as reference
+%pyspark
+business.printSchema()
+
+// read all the json files and create dataframes
+val bizDF = spark.read.json("s3://hp-skt-emrbucket/yelp/business.json")
+val checkinDF = spark.read.json("s3://hp-skt-emrbucket/yelp/checkin.json")
+val photosDF = spark.read.json("s3://hp-skt-emrbucket/yelp/photos.json")
+val reviewDF = spark.read.json("s3://hp-skt-emrbucket/yelp/review.json")
+val tipDF = spark.read.json("s3://hp-skt-emrbucket/yelp/tip.json")
+val userDF = spark.read.json("s3://hp-skt-emrbucket/yelp/user.json")
+
+
+
+
+
+
+
+
+
+// try printing out the schema.  Notice how easily we can get the schema.
+reviewDF.printSchema
+reviewDF.show
+// try saving a dataframe directly as a hive table
+reviewDF.write.mode("append").
+   option("path","s3://hp-skt-emrbucket/yelp/reviewDF2/").
+   saveAsTable("reviewDF2")
+// try again with a complicated json file such as business.json
+// were you able to create a hive table directly?
+
+
+// create temporary views so we can use them later in SQL statements
+bizDF.createTempView("business4_df")
+checkinDF.createTempView("checkin_df")
+photosDF.createTempView("photos_df")
+reviewDF.createTempView("review_df")
+tipDF.createTempView("tips_df")
+userDF.createTempView("user_df")
+
+Now, on a new line type the following to enter into SQL mode and get a list of all the tables.
+
+%sql
+show tables
+
+Create the exploded dataframe.  Three different styles are shown.
+
+//create exploded view of business.  Use SQL as well as column expression
+val explodedDF = spark.sql(""" 
+  SELECT * FROM business4 
+  LATERAL VIEW explode(categories) c AS cat_exploded """)
+explodedDF.show()
+explodedDF.createTempView("exploded_df")
+val exploded2DF = bizDF.withColumn("cat_exploded", explode($"categories"))
+exploded2DF.show()
+val exploded3DF = bizDF.
+  selectExpr("*","explode(categories) as cat_explode")
+//check to make sure the three commands produced same result
+explodedDF.count
+exploded2DF.count
+exploded3DF.count
+
+Create the restaurants dataframe.
+
+// create restaurant DF
+val restaurantsDF = spark.sql(""" 
+  SELECT * FROM exploded_df WHERE cat_exploded="Restaurants" 
+  """)
+restaurantsDF.createTempView("restaurants_df")
+restaurantsDF.show()
+
+Let’s test querying a nested field.
+
+%sql
+SELECT name, state, city, attributes.ambience.romantic romantic 
+FROM restaurants_df 
+WHERE attributes.ambience.romantic = true LIMIT 10
+ 
+
+Try again using column expressions.
+
+val romanticDF = restaurantsDF.
+  select($"name",$"state",$"city",
+  ($"attributes.ambience.romantic").alias("romantic")).
+  where($"attributes.ambience.romantic" === true)
+romanticDF.show
+
+
+
+
+
+
+Now create the review of restaurants dataframe.  Both SQL and column expression are shown.
+
+// review of restaurants
+val revRestDF = spark.sql(""" 
+SELECT restaurants_df.business_id, review_df.stars, review_df.user_id 
+FROM review_df JOIN restaurants_df ON restaurants_df.business_id = review_df.business_id 
+""")
+revRestDF.show
+
+val review_filteredDF = reviewDF.join(restaurantsDF, reviewDF("business_id") === restaurantsDF("business_id")).
+    select(restaurantsDF("business_id"),reviewDF("stars"), reviewDF("user_id") )
+review_filteredDF.show
+
+// whichever way you make revRestDF, you must create 
+// a temp view to use in SQL statements
+revRestDF.createTempView("revRest_df")
+
+Create Elite users.
+
+//create elite users.  Use SQL as well as column expression
+val eliteDF = spark.sql(""" 
+	SELECT * FROM user_df LATERAL VIEW explode(elite) c AS elite_year
+	 """)
+eliteDF.show
+eliteDF.createTempView("elite_df")
+val elite2DF = userDF.withColumn("elite_year", explode($"elite"))
+elite2DF.show
+
+1)	Restaurants across United States
+
+// number of restaurants in the US 
+%sql
+SELECT state, count (business_id) number_restaurants FROM restaurants_df
+GROUP BY state
+ORDER BY number_restaurants DESC LIMIT 20
+ 
+
+
+// column expression
+val USRestaurantsDF = restaurantsDF.
+	groupBy("state").
+      count().withColumnRenamed("count", "num_restaurants").
+	orderBy(desc("num_restaurants"))
+USRestaurantsDF.show
+
+
+2)	Which Cities Have The Highest Number of Restaurants? In order to map restaurants across United, Select the columns (city, count of business_id as number_city  ) by grouping data of restaurants table by city and then order it by number_city 
+
+# http://allaboutscala.com/big-data/spark/#dataframe-sql-group-by
+
+%sql
+SELECT city, count(business_id) number_city FROM restaurants_df
+GROUP BY city
+ORDER BY number_city DESC LIMIT 20;
+ 
+
+
+
+
+// column expression
+val city_restDF = restaurantsDF.
+	groupBy("city").
+	count().withColumnRenamed("count","num_city").
+	orderBy(desc("num_city"))
+city_restDF.show()
+
+
+Below is the pie chart version you created in Hue.
+
+ 
+
+
+3)	Find out Top 15 Sub-Categories Of  Restaurants from tables exploded  and restaurants with business_id and grouping by cat_exploded column of the table exploded, which are not in ("Restaurants","Food")
+
+%sql
+SELECT e.cat_exploded category, count(e.cat_exploded) number FROM exploded_df e JOIN restaurants_df re
+ON e.business_id = re.business_id
+WHERE e.cat_exploded not in ("Restaurants","Food") GROUP BY e.cat_exploded
+ORDER BY number DESC LIMIT 15
+ 
+
+
+// column expression
+val t15JoinDF = explodedDF.
+  join(restaurantsDF, explodedDF("business_id") === restaurantsDF("business_id"))
+val t15JoinFilterDF = t15JoinDF.
+  filter(!explodedDF("cat_exploded").isin("Restaurants","Food")).
+  select(explodedDF("cat_exploded"))
+val t15groupDF = t15JoinFilterDF.
+  groupBy(explodedDF("cat_exploded")).
+  count().withColumnRenamed("count","num_subcat").
+  orderBy(desc("num_subcat")).limit(20)
+t15groupDF.show()
+
+// or chaining
+val t15JoinDF = explodedDF.
+  join(restaurantsDF, explodedDF("business_id") === restaurantsDF("business_id")).
+  filter(!explodedDF("cat_exploded").isin("Restaurants","Food")).
+  select(explodedDF("cat_exploded")).
+  groupBy(explodedDF("cat_exploded")).
+  count().withColumnRenamed("count","num_subcat").
+  orderBy(desc("num_subcat")).limit(20)
+t15JoinDF.show()
+
+
+4)	Distribution of ratings vs  categories:
+테이블 ratings를 앞서 만든 테이블 exploded 와 restaurant을 가지고 같은 business_id로 조인하여 다음의 조건을 만족하여 만드세요:
+-	exploded 의 cat_exploded 값은 다음의 값중 하나:  "Nightlife","Bars", "Sandwiches", "Fast Food","American (Traditional)"
+-	exploded 의 cat_exploded 와 stars 컬럼을 가지고 Group By  하고 stars 컬럼으로 ASC 하여 정렬하세여;
+-	다음의 HiveQL로 Hue에서 그래프를 다음과 같이 만듬: select * from ratings order by number DESC;
+
+%sql
+SELECT e.cat_exploded category, e.stars stars, count(e.cat_exploded) number 
+FROM exploded_df e JOIN restaurants_df re
+ON e.business_id = re.business_id
+WHERE e.cat_exploded in ("Nightlife","Bars","Sandwiches","Fast Food","American (Traditional)")
+GROUP BY e.cat_exploded, e.stars ORDER BY stars ASC 
+ 
+
+
+// column expression
+val rateCatDF = explodedDF.
+  join(restaurantsDF, explodedDF("business_id") === restaurantsDF("business_id")).
+  filter(explodedDF("cat_exploded").isin("Nightlife","Bars","Sandwiches","Fast Food","American (Traditional)")).
+  select(explodedDF("cat_exploded"), explodedDF("stars")).
+  groupBy(explodedDF("cat_exploded"), explodedDF("stars")).	
+  count().withColumnRenamed("count","number").
+  orderBy("stars", "number")
+rateCatDF.show()
+
+
+
+
+
+
+
+
+5)	What ratings do the majority of restaurants have? 
+
+%sql
+SELECT stars, count (business_id) number_restaurants 
+FROM restaurants_df 
+GROUP BY stars 
+ORDER BY stars
+ 
+
+// column expression
+val rRatingsDF = restaurantsDF.select("stars").
+  groupBy("stars").
+  count().withColumnRenamed("count", "num_restaurants")
+rRatingsDF.show()
+
+
+6)	Rating distribution in restaurant  reviews
+
+%sql
+SELECT stars, 
+  round(count(stars) * 100.0 / sum(count(stars)) over(),2) stars_distribution 
+  FROM revRest_df
+  GROUP BY stars 
+  ORDER BY stars
+
+ 
+
+
+
+# not showing the decimal number in text of HDFS
+CREATE TABLE stars2 AS
+SELECT stars, round((count(stars) * 100.0 / sum(count(stars)) over()), 2) stars_distribution 
+FROM review_filtered
+GROUP BY stars;
+
+# test
+SELECT stars, count(stars), sum(count(stars)) over()
+FROM review_filtered
+GROUP BY stars;
+
+# not showing the decimal number in text of HDFS
+CREATE TABLE stars2 
+AS
+SELECT stars, [FIll-In] stars_distribution 
+FROM review_filtered
+GROUP BY stars;
+
+FIl-In: 
+ round((a * 100.0 / b), 2)
+a. count(stars) 
+b. a의 sum over 함수
+
+
+# not showing the decimal number in Json of HDFS
+CREATE TABLE stars
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'  AS
+SELECT stars, round((count(stars) * 100.0 / sum(count(stars)) over()), 2) stars_distribution 
+FROM review_filtered
+GROUP BY stars;
+
+SELECT * FROM stars2 ORDER BY stars_distribution ;
+
+7)	Which restaurants get bad vs good   reviews?
+
+a.	Good Review
+
+%sql
+SELECT e.cat_exploded category, 
+  count(e.cat_exploded) good_reviews_number 
+FROM exploded_df e JOIN restaurants_df re
+ON e.business_id = re.business_id
+WHERE e.cat_exploded NOT IN ("Restaurants","Food") AND re.stars>=4 
+GROUP BY e.cat_exploded
+ORDER BY good_reviews_number DESC LIMIT 10
+ 
+
+# 힌트: 
+good_reviews1 테이블을 exploded e 와 restaurants re 테이블을 business_id로 조인하여 컬럼은 (e.cat_exploded category, count(e.cat_exploded) good_reviews_number) 을 가지고 다음의 조건을 만족하게 만드세요:
+- e.cat_exploded NOT IN ("Restaurants","Food") 
+- re.stars>=4
+
+//column expression
+val goodRevDF = explodedDF.
+  join(restaurantsDF, explodedDF("business_id") === restaurantsDF("business_id")).
+  filter(!explodedDF("cat_exploded").isin("Restaurants","Food") && (restaurantsDF("stars") >= 4) ).
+  select(explodedDF("cat_exploded")).
+  groupBy(explodedDF("cat_exploded")).
+  count().withColumnRenamed("count","num_good").
+  orderBy(desc("num_good")).limit(10)
+goodRevDF.show()
+
+b.	Bad Review
+
+%sql
+SELECT e.cat_exploded category, count(e.cat_exploded) bad_reviews_number 
+FROM exploded_df e JOIN restaurants_df re
+ON e.business_id = re.business_id
+WHERE e.cat_exploded NOT IN ("Restaurants","Food") 
+  AND re.stars<=2 GROUP BY e.cat_exploded
+ORDER BY bad_reviews_number DESC LIMIT 10
+ 
+
+// column expression
+val badRevDF = explodedDF.
+  join(restaurantsDF, explodedDF("business_id") === restaurantsDF("business_id")).
+  filter(!explodedDF("cat_exploded").isin("Restaurants","Food") && (restaurantsDF("stars") <= 2) ).
+  select(explodedDF("cat_exploded")).
+  groupBy(explodedDF("cat_exploded")).
+  count().withColumnRenamed("count","num_bad").
+  orderBy(desc("num_bad")).limit(10)
+badRevDF.show()
+
+
+
+
+
+
+
+
+8)	Which restaurants have the most  reviews?
+
+%sql
+SELECT name Name, city City, review_count Number_of_Reviews , 
+  stars Stars, attributes.restaurantspricerange2 Price_Range
+FROM restaurants_df
+ORDER BY review_count DESC LIMIT 15
+ 
+
+// column expression
+val mostReviewDF = restaurantsDF.
+  select($"name".alias("Name"), $"city".alias("City"), 
+    $"review_count".alias("Number_of_Reviews"), 
+    $"stars".alias("Stars"), 
+    $"attributes.restaurantspricerange2".alias("Price_Range")).
+  orderBy(desc("Number_of_Reviews")).
+  limit(15)
+mostReviewDF.show()
+
+
+9)	What number of yelp users are elite? Do they rate differently than non-elite  users?
+
+a.	Average rating by all users: 
+
+%sql
+SELECT round(avg(average_stars),2) avg_rating_user
+FROM user_df
+
+3.71
+
+
+b.	Average rating by elite users: 
+
+%sql
+SELECT round(avg(average_stars),2) avg_rating_elite
+FROM elite_df
+
+3.82
+
+c.	Count number of elite users by year:
+
+
+%sql
+SELECT elite_year Year, count(distinct user_id) Elite_Users FROM elite_df
+GROUP BY elite_year
+ORDER BY elite_year ASC
+ 
+
+
+
+
+
+
+
+d.	Count average reviews by elite users by year
+
+%sql
+SELECT elite_year Year, round(avg(average_stars),2) Avg_Rating 
+FROM elite_df
+GROUP BY Year
+ORDER BY Avg_Rating ASC
+ 
+
+Try creating the column expression versions by yourself.
